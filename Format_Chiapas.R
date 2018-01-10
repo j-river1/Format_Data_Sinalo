@@ -27,7 +27,7 @@ format_chiapas <- function (listfiles, variables = c("HR", "Pp", "RadG", "Tmax",
   #Save Files
   save_files <- lapply(seq_along(listFiles), function(y,n,i){
     name <- n[[i]]
-    write.table(y[[i]], file = paste0("./Data_Format/", name, ".txt" ), row.names = FALSE)
+    write.table(y[[i]], file = paste0("./Data_Format/", name, ".txt" ), row.names = FALSE, sep="")
   }, y=listFiles, n=names(listFiles))
   
   
@@ -49,12 +49,22 @@ choose_file <- function (file, variables=c("HR", "Pp", "RadG", "Tmax", "Tmin"))
   
   if(variableFile %in% variables)
   {
-    file <- read.table(paste0("./Data_Chiapas/", file), header = TRUE)
-    colnames(file) <- c("Date","Value")
-    #file$Value <- as.numeric(file$Value )
-    file$Value <- as.numeric(levels(file$Value))[file$Value] 
-    file$Date <- as.Date(as.character(file$Date), format= "%d/%m/%Y")
-    file$Date <- format(file$Date, "%Y-%m-%d")
+    file <- read.table(paste0("./Data_Original/", file), header = TRUE)
+    
+    if(ncol(file)!=2)
+    {
+      stop("The file ", file, " has no two columns")
+    }
+    else
+    {
+      colnames(file) <- c("Date","Value")
+      #file$Value <- as.numeric(file$Value )
+      #file$Value <- as.numeric(levels(file$Value))[file$Value] 
+      file$Value <- as.numeric(as.character(file$Value))
+      file$Date <- as.Date(as.character(file$Date), format= "%d/%m/%Y")
+      file$Date <- format(file$Date, "%Y-%m-%d")
+    }
+
     }
   
   return(file)  

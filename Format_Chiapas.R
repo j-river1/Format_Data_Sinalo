@@ -27,7 +27,7 @@ format_chiapas <- function (listfiles, variables = c("HR", "Pp", "RadG", "Tmax",
   #Save Files
   save_files <- lapply(seq_along(listFiles), function(y,n,i){
     name <- n[[i]]
-    write.table(y[[i]], file = paste0("./Data_Format/", name, ".txt" ), row.names = FALSE, sep="")
+    write.table(y[[i]], file = paste0("./Data_Format/", name ), row.names = FALSE, sep="")
   }, y=listFiles, n=names(listFiles))
   
   
